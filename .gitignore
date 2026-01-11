@@ -1,0 +1,29 @@
+# ======================
+# BACKEND (NestJS)
+# ======================
+backend/node_modules/
+backend/dist/
+backend/.env
+backend/.env.*.local
+backend/*.log
+backend/coverage/
+
+# ======================
+# FRONTEND (Expo)
+# ======================
+frontend_bd/node_modules/
+frontend_bd/.expo/
+frontend_bd/.expo-shared/
+frontend_bd/.env
+frontend_bd/.env.*.local
+frontend_bd/web-build/
+frontend_bd/*.log
+
+# ======================
+# GENERAL/IDEs
+# ======================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.code-workspace

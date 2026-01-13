@@ -5,6 +5,8 @@ import { ConfigService, ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DomiciliarioModule } from './domiciliario/domiciliario.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { DomiciliarioModule } from './domiciliario/domiciliario.module';
     }),
     ScheduleModule.forRoot(),
     DomiciliarioModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -19,6 +19,16 @@ export class CreateDomiciliarioDto {
   @ApiProperty({ example: 'Juan', description: 'Name of the person' })
   primer_nombre: string;
 
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty({ example: 'juan123', description: 'Username of the person' })
+  username: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty({ example: 'securePassword', description: 'Password of the person' })
+  password: string;
+
   @IsOptional()
   @IsString()
   @ApiProperty({

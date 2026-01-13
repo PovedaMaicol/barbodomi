@@ -27,6 +27,7 @@ barbodomi/
 │ └── package.json
 │
 ├── frontend_bd/ # App móvil Expo
+
 │ ├── src/
 │ │ ├── screens/ # Pantallas de la app
 │ │ ├── components/ # Componentes reutilizables

@@ -8,5 +8,6 @@ import { Domiciliario } from './entities/domiciliario.entity';
   imports: [TypeOrmModule.forFeature([Domiciliario])],
   controllers: [DomiciliarioController],
   providers: [DomiciliarioService],
+  exports: [DomiciliarioService],
 })
 export class DomiciliarioModule {}

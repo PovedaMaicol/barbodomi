@@ -59,6 +59,20 @@ export class DomiciliarioService {
     return domiciliario;
   }
 
+  async findByUsername(username: string){
+    const user = await this.domiciliarioRepository.findOne({ where: { username } });
+
+    try {
+      return user;
+    } catch (error) {
+      this.logger.error(
+        `Error finding domiciliario by username: ${error.message}`,
+        error.stack,
+      );
+      throw new InternalServerErrorException('Error al buscar el domiciliario');
+    }
+  }
+
   async update(
     id: number,
     updateDomiciliarioDto: UpdateDomiciliarioDto,

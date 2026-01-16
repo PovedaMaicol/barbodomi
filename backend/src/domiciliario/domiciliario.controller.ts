@@ -7,11 +7,14 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { DomiciliarioService } from './domiciliario.service';
 import { CreateDomiciliarioDto } from './dto/create-domiciliario.dto';
 import { UpdateDomiciliarioDto } from './dto/update-domiciliario.dto';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+
+
 
 @Controller('domiciliario')
 export class DomiciliarioController {

@@ -11,6 +11,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -21,14 +22,17 @@ export class UsersService {
   ) {}
   async create(createUserDto: CreateUserDto): Promise<User> {
     try {
-      const newUser = this.userRepository.create(createUserDto);
+      // Hash the password before saving
+      const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+
+      const newUser = this.userRepository.create({
+        ...createUserDto,
+        password: hashedPassword,
+      });
       const savedUser = await this.userRepository.save(newUser);
       return savedUser;
     } catch (error) {
-      this.logger.error(
-        `Error creating user: ${error.message}`,
-        error.stack,
-      );
+      this.logger.error(`Error creating user: ${error.message}`, error.stack);
       if (error.code === '23505') {
         // Código para violación de unique constraint en PostgreSQL
         throw new ConflictException('El usuario ya existe');
@@ -50,7 +54,7 @@ export class UsersService {
     return user;
   }
 
-   async findByUsername(username: string){
+  async findByUsername(username: string) {
     const user = await this.userRepository.findOne({ where: { username } });
 
     try {
@@ -64,24 +68,25 @@ export class UsersService {
     }
   }
 
-  async update(
-    id: number,
-    updateUserDto: UpdateUserDto
-  ): Promise<User> {
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
 
     const datosActualizados = { ...updateUserDto };
+
+    // if is a new password, hash it
+    if (updateUserDto.password) {
+      datosActualizados.password = await bcrypt.hash(
+        updateUserDto.password,
+        10,
+      );
+    }
 
     const userActualizado = this.userRepository.merge(user, datosActualizados);
 
     try {
       return await this.userRepository.save(userActualizado);
-
     } catch (error) {
-      this.logger.error(
-        `Error updating user: ${error.message}`,
-        error.stack,
-      );
+      this.logger.error(`Error updating user: ${error.message}`, error.stack);
       throw new InternalServerErrorException('Error al actualizar el usuario');
     }
   }

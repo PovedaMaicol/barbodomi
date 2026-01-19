@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DomiciliarioModule } from './domiciliario/domiciliario.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { NegociosModule } from './negocios/negocios.module';
 
 @Module({
   imports: [
@@ -32,9 +33,10 @@ import { UsersModule } from './users/users.module';
       }),
     }),
     ScheduleModule.forRoot(),
-    DomiciliarioModule,
     AuthModule,
+    DomiciliarioModule,
     UsersModule,
+    NegociosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

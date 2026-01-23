@@ -5,20 +5,20 @@ import {
   TouchableOpacity,
   StyleSheet,
   TextInput,
-  Alert
+  Alert,
 } from "react-native";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { router } from "expo-router";
-
+import { Link } from "expo-router";
 
 export default function LoginScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-    const { login } = useAuth();
+  const { login } = useAuth();
 
-  const handleLogin = async() => {
+  const handleLogin = async () => {
     try {
       await login(username, password);
       router.replace("/(tabs)");
@@ -50,6 +50,11 @@ export default function LoginScreen() {
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Iniciar Sesión</Text>
       </TouchableOpacity>
+
+      <Link href="/register">
+        <Text>Registrate</Text>
+      </Link>
+
     </View>
   );
 }

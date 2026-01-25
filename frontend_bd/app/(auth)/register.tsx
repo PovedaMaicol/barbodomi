@@ -46,14 +46,14 @@ export default function RegisterScreen() {
         placeholder="First Name"
         value={form.primer_nombre}
         onChangeText={(text) => handleChange("primer_nombre", text)}
-        style={{ borderWidth: 1, marginBottom: 10, width: 200, padding: 5 }}
+        style={styles.input}
       />
 
       <TextInput
         placeholder="Username"
         value={form.username}
         onChangeText={(text) => handleChange("username", text)}
-        style={{ borderWidth: 1, marginBottom: 10, width: 200, padding: 5 }}
+        style={styles.input}
       />
       <TextInput
         style={styles.input}

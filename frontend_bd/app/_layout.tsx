@@ -10,7 +10,7 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useAuth } from "@/hooks/useAuth";
 
 export const unstable_settings = {
-  anchor: "(tabs)",
+  anchor: "(tabs)",       
 };
 
 export default function RootLayout() {
@@ -23,7 +23,8 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
+      <Stack
+        screenOptions={{ headerShown: false }}>
         {/* 2. Si NO está autenticado, muestra auth primero */}
         {!isAuthenticated ? (
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />

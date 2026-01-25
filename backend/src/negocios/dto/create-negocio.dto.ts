@@ -43,4 +43,11 @@ export class CreateNegocioDto {
     description: 'Website of the business',
   })
   website?: string;
+
+  @IsNotEmpty()
+  @ApiProperty({
+    example: 'Restaurante',
+    description: 'Category of the business',
+  })
+  category: string;
 }

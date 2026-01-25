@@ -26,4 +26,7 @@ export class Negocio {
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     created_at: Date;
+
+    @Column({ type: 'varchar', length: 100, nullable: true })
+    category: string | null;
  }

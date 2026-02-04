@@ -11,12 +11,19 @@ import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { router } from "expo-router";
 import { Link } from "expo-router";
+import * as SecureStore from "expo-secure-store";
 
 export default function LoginScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const { login } = useAuth();
+
+  const clearStorage = async () => {
+    await SecureStore.deleteItemAsync("token");
+    await SecureStore.deleteItemAsync("user");
+    Alert.alert("Storage limpiado");
+  };
 
   const handleLogin = async () => {
     try {
@@ -30,6 +37,13 @@ export default function LoginScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
+
+      {/* 👇 Botón temporal para limpiar */}
+      <TouchableOpacity onPress={clearStorage}>
+        <Text style={{ color: "red", textAlign: "center", marginBottom: 10 }}>
+          🗑️ Limpiar Storage (temporal)
+        </Text>
+      </TouchableOpacity>
 
       <TextInput
         placeholder="Usuario"
@@ -54,7 +68,6 @@ export default function LoginScreen() {
       <Link href="/register">
         <Text>Registrate</Text>
       </Link>
-
     </View>
   );
 }

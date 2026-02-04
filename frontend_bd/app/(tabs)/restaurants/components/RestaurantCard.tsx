@@ -1,25 +1,39 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { router } from "expo-router";
 
 const RestaurantCard = ({
+  id,
   name,
   deliveryTime,
   minPrice,
   distance,
-  rating,
-  reviewCount,
-  hasFreeDelivery,
+  img_url,
+  
 }: RestaurantCardProps) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container}
+    onPress={() => router.push(`/restaurants/${id}`)}>
       {/* Imagen placeholder por ahora */}
       <View style={styles.imageContainer}>
-        <View style={styles.imagePlaceholder} />
+        {img_url ? (
+          <Image
+            source={{ uri: img_url }}
+            style={{
+              width: "100%",
+              height: "100%",
+              borderTopLeftRadius: 8,
+              borderTopRightRadius: 8,
+            }}
+          />
+        ) : (
+          <View style={styles.imagePlaceholder} />
+        )}
       </View>
 
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.deliveryTime}>
-          {deliveryTime} • ${minPrice}
+          {deliveryTime}{minPrice}
         </Text>
         <Text style={styles.distance}>{distance}</Text>
       </View>
@@ -77,6 +91,6 @@ export interface RestaurantCardProps {
   rating: number;
   reviewCount: number;
   hasFreeDelivery: boolean;
-  imageUrl?: string;
+  img_url?: string;
   tags?: string[];
 }

@@ -29,4 +29,7 @@ export class Negocio {
 
     @Column({ type: 'varchar', length: 100, nullable: true })
     category: string | null;
+
+    @Column({ type: 'varchar', nullable: true })
+    img_url: string | null;
  }

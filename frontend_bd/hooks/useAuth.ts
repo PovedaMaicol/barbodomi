@@ -14,8 +14,10 @@ export function useAuth() {
   const checkAuthStatus = async () => {
     try {
       const token = await SecureStore.getItemAsync("token");
+      console.log("🔑 Token encontrado:", token ? "SÍ" : "NO");
       setIsAuthenticated(!!token); // true si hay token, false si no
     } catch (error) {
+      console.log("❌ Error chequeando token:", error);
       setIsAuthenticated(false);
     } finally {
       setIsLoading(false);
@@ -28,7 +30,7 @@ export function useAuth() {
     // Guardar token de forma segura
     await SecureStore.setItemAsync("token", data.access_token);
     await SecureStore.setItemAsync("user", JSON.stringify(data.usuario));
-    
+
     setIsAuthenticated(true); // ¡IMPORTANTE!
     return data;
   };
@@ -39,10 +41,10 @@ export function useAuth() {
     setIsAuthenticated(false);
   };
 
-  return { 
-    login, 
-    logout, 
-    isAuthenticated, 
-    isLoading 
+  return {
+    login,
+    logout,
+    isAuthenticated,
+    isLoading,
   };
 }

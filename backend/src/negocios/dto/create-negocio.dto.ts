@@ -50,4 +50,11 @@ export class CreateNegocioDto {
     description: 'Category of the business',
   })
   category: string;
+
+  @IsOptional()
+  @ApiProperty({
+    example: 'http://www.tiendaabc.com/logo.png',
+    description: 'Image URL of the business',
+  })
+  img_url?: string;
 }

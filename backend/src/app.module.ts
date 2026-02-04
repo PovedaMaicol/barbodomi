@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { NegociosModule } from './negocios/negocios.module';
 import { SupabaseModule } from './supabase/supabase.module';
+import { ProductosModule } from './productos/productos.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { SupabaseModule } from './supabase/supabase.module';
     UsersModule,
     NegociosModule,
     SupabaseModule,
+    ProductosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

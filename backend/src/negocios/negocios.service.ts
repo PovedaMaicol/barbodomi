@@ -5,6 +5,7 @@ import { UpdateNegocioDto } from './dto/update-negocio.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Negocio } from './entities/negocio.entity';
+import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable()
 export class NegociosService {
@@ -12,13 +13,39 @@ export class NegociosService {
   constructor(
     @InjectRepository(Negocio)
     private readonly negocioRepository: Repository<Negocio>,
+    private readonly supabaseService: SupabaseService,
   ) {}
 
-  async create(createNegocioDto: CreateNegocioDto): Promise<Negocio> {
+  async create(
+    createNegocioDto: CreateNegocioDto,
+    file?: Express.Multer.File,
+  ): Promise<Negocio> {
     try {
-      const newNegocio = this.negocioRepository.create({ ...createNegocioDto });
-      const savedNegocio = await this.negocioRepository.save(newNegocio);
-      return savedNegocio;
+      let img_url = null;
+      let img_path = null;
+
+      // Si hay archivo, subirlo a Supabase
+      if (file) {
+        const bucketName = 'negocios'; // ← Nombre del bucket
+        const uploadResult = await this.supabaseService.uploadFile(
+          bucketName,
+          file.buffer,
+          file.mimetype,
+          file.originalname,
+        );
+
+        img_url = uploadResult.publicUrl;
+        img_path = uploadResult.path;
+      }
+
+      // Crear negocio con las URLs
+      const newNegocio = this.negocioRepository.create({
+        ...createNegocioDto,
+        img_url,
+        img_path,
+      });
+
+      return await this.negocioRepository.save(newNegocio);
     } catch (error) {
       this.logger.error(
         `Error creating negocio: ${error.message}`,

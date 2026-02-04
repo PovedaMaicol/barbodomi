@@ -51,10 +51,12 @@ export class CreateNegocioDto {
   })
   category: string;
 
-  @IsOptional()
-  @ApiProperty({
-    example: 'http://www.tiendaabc.com/logo.png',
-    description: 'Image URL of the business',
-  })
-  img_url?: string;
+  // @IsOptional()
+  // @ApiProperty({
+  //   example: 'http://www.tiendaabc.com/logo.png',
+  //   description: 'Image URL of the business',
+  // })
+  // img_url?: string;
+  @ApiProperty({ type: 'string', format: 'binary', required: false })
+  image?: any;
 }

@@ -5,7 +5,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: '*',
+    origin: [
+      'http://localhost:5173', // desarrollo
+      'https://tourmaline-fudge-f10320.netlify.app/',
+    ],
+    credentials: true
   });
   const port = process.env.PORT || 3000;
 

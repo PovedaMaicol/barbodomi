@@ -33,6 +33,9 @@ import { ProductosModule } from './productos/productos.module';
         synchronize: true,
         // logging: true,
         migrationsRun: false,
+        ssl: {
+          rejectUnauthorized: false,
+        },
       }),
     }),
     ScheduleModule.forRoot(),

@@ -7,7 +7,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:5173', // desarrollo
-      'https://tourmaline-fudge-f10320.netlify.app/',
+      'https://tourmaline-fudge-f10320.netlify.app',
     ],
     credentials: true
   });

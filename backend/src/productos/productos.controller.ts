@@ -7,25 +7,39 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile
 } from '@nestjs/common';
 import { ProductosService } from './productos.service';
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiConsumes,
+} from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('productos')
 export class ProductosController {
   constructor(private readonly productosService: ProductosService) {}
 
   @Post()
+  @UseInterceptors(FileInterceptor('image'))
+  @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Create a new Producto' })
   @ApiBody({ type: CreateProductoDto })
   @ApiResponse({
     status: 201,
     description: 'The producto has been successfully created.',
   })
-  create(@Body() createProductoDto: CreateProductoDto) {
-    return this.productosService.create(createProductoDto);
+  create(
+    @Body() createProductoDto: CreateProductoDto,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    return this.productosService.create(createProductoDto, file);
   }
 
   @Get()

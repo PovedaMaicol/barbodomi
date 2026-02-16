@@ -5,6 +5,7 @@ import { UpdateProductoDto } from './dto/update-producto.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Producto } from './entities/producto.entity';
+import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable()
 export class ProductosService {
@@ -12,10 +13,37 @@ export class ProductosService {
   constructor(
     @InjectRepository(Producto)
     private readonly productoRepository: Repository<Producto>,
+    private readonly supabaseService: SupabaseService,
   ) {}
-  async create(createProductoDto: CreateProductoDto): Promise<Producto> {
+
+  async create(
+    createProductoDto: CreateProductoDto,
+    file?: Express.Multer.File,
+  ): Promise<Producto> {
     try {
-      const newProducto = this.productoRepository.create(createProductoDto);
+      let img_url = null;
+      let img_path = null;
+
+      // Si hay archivo, subirlo a Supabase
+      if (file) {
+        const bucketName = 'productos'; // ← Nombre del bucket
+        const uploadResult = await this.supabaseService.uploadFile(
+          bucketName,
+          file.buffer,
+          file.mimetype,
+          file.originalname,
+        );
+
+        img_url = uploadResult.publicUrl;
+        img_path = uploadResult.path;
+      }
+
+      // Crear producto con las URLs
+      const newProducto = this.productoRepository.create({
+        ...createProductoDto,
+        img_url,
+        img_path,
+      });
       return await this.productoRepository.save(newProducto);
     } catch (error) {
       this.logger.error(

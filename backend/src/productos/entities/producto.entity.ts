@@ -17,4 +17,7 @@ export class Producto {
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   img_url: string | null;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  img_path: string | null;
 }

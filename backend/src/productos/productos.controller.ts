@@ -8,7 +8,7 @@ import {
   Param,
   Delete,
   UseInterceptors,
-  UploadedFile
+  UploadedFile,
 } from '@nestjs/common';
 import { ProductosService } from './productos.service';
 import { CreateProductoDto } from './dto/create-producto.dto';
@@ -68,9 +68,14 @@ export class ProductosController {
   }
 
   @Patch(':id')
+  @UseInterceptors(FileInterceptor('image'))
   @ApiOperation({ summary: 'Update a Producto by ID' })
   @ApiParam({ name: 'id', type: 'number', description: 'ID of the producto' })
-  @ApiBody({ type: UpdateProductoDto })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Data to update the producto',
+    type: UpdateProductoDto
+  })
   @ApiResponse({
     status: 200,
     description: 'The producto has been successfully updated.',
@@ -82,8 +87,9 @@ export class ProductosController {
   update(
     @Param('id') id: string,
     @Body() updateProductoDto: UpdateProductoDto,
+    @UploadedFile() file?: Express.Multer.File,
   ) {
-    return this.productosService.update(+id, updateProductoDto);
+    return this.productosService.update(+id, updateProductoDto, file);
   }
 
   @Delete(':id')

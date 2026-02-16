@@ -69,8 +69,26 @@ export class ProductosService {
   async update(
     id: number,
     updateProductoDto: UpdateProductoDto,
+    file?: Express.Multer.File,
   ): Promise<Producto> {
     const producto = await this.findOne(id);
+
+    if (file) {
+      // Si el producto ya tiene una imagen, eliminarla de Supabase
+     const { publicUrl, path} = await this.supabaseService.uploadFile(
+        'productos',
+        file.buffer,
+        file.mimetype,
+        file.originalname,
+      );
+
+      if (producto.img_path) {
+        await this.supabaseService.deleteFile('productos', producto.img_path);
+      }
+
+      producto.img_url = publicUrl;
+      producto.img_path = path;
+    }
 
     const datosActualizados = { ...updateProductoDto };
 
